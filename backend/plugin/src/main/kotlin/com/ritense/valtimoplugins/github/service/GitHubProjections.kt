@@ -259,22 +259,12 @@ object GitHubProjections {
         items: ArrayNode,
         truncated: Boolean,
         totalCount: Int? = null,
-        extra: Map<String, Any?> = emptyMap(),
     ): ObjectNode =
         obj {
             set<ArrayNode>("items", items)
             put("count", items.size())
             put("truncated", truncated)
             totalCount?.let { put("totalCount", it) }
-            extra.forEach { (key, value) ->
-                when (value) {
-                    null -> putNull(key)
-                    is JsonNode -> set<JsonNode>(key, value)
-                    is Boolean -> put(key, value)
-                    is Int -> put(key, value)
-                    else -> put(key, value.toString())
-                }
-            }
         }
 
     fun array(values: Iterable<JsonNode>): ArrayNode = nodes.arrayNode().addAll(values.toList())
