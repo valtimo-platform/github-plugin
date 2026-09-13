@@ -1,0 +1,90 @@
+<!--
+  ~ Copyright 2015-2026 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<p style="margin-bottom: 1.5rem">{{ 'setProjectItemFieldDescription' | pluginTranslate: pluginId | async }}</p>
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    valueTypeItems: valueTypeItems$ | async
+  } as obs"
+>
+  <v-input
+    name="projectId"
+    [title]="'projectId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [defaultValue]="obs.prefill?.projectId"
+    [placeholder]="'pv:projectId'"
+    [tooltip]="'projectIdTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-input
+    name="itemId"
+    [title]="'itemId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [defaultValue]="obs.prefill?.itemId"
+    [placeholder]="'pv:projectItemId'"
+    [tooltip]="'itemIdTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-input
+    name="fieldId"
+    [title]="'fieldId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [defaultValue]="obs.prefill?.fieldId"
+    [placeholder]="'pv:sprintFieldId'"
+    [tooltip]="'fieldIdTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-select
+    name="valueType"
+    [items]="obs.valueTypeItems || []"
+    [title]="'valueType' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [defaultSelectionId]="obs.prefill?.valueType"
+    [tooltip]="'valueTypeTooltip' | pluginTranslate: pluginId | async"
+  ></v-select>
+
+  <v-input
+    name="value"
+    [title]="'value' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [defaultValue]="obs.prefill?.value"
+    [tooltip]="'valueTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-input
+    name="resultVariable"
+    [title]="'resultVariable' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [defaultValue]="obs.prefill?.resultVariable"
+    [tooltip]="'resultVariableTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+</v-form>

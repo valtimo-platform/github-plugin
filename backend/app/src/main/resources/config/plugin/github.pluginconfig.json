@@ -1,0 +1,14 @@
+[
+    {
+        "id": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "title": "GitHub configuration (Autodeployed)",
+        "pluginDefinitionKey": "github",
+        "properties": {
+            "url": "https://api.github.com",
+            "token": "${GITHUB_TOKEN:no-token-configured}",
+            "defaultRepository": "${GITHUB_REPOSITORY:valtimo-platform/github-plugin}",
+            "perPage": 100,
+            "maxPages": 5
+        }
+    }
+]

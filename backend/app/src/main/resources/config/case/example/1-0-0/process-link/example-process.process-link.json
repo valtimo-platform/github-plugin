@@ -1,0 +1,31 @@
+[
+    {
+        "activityId": "start-event",
+        "activityType": "bpmn:StartEvent:start",
+        "processLinkType": "form",
+        "formDefinitionName": "start-form-example"
+    },
+    {
+        "activityId": "github-get-issue",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginActionDefinitionKey": "get-issue",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "actionProperties": {
+            "issueNumber": 1,
+            "includeComments": true,
+            "resultVariable": "issue"
+        }
+    },
+    {
+        "activityId": "github-comment",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginActionDefinitionKey": "comment",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "actionProperties": {
+            "issueNumber": 1,
+            "body": "Read by the Valtimo GitHub plugin sandbox."
+        }
+    }
+]

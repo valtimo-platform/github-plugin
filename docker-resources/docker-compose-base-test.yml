@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "54356:5432"
+    environment:
+      POSTGRES_DB: github-test
+      POSTGRES_USER: test-user
+      POSTGRES_PASSWORD: password
