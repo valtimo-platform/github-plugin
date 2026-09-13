@@ -1,0 +1,76 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-repository",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getAuthenticatedUser",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-authenticated-user",
+        "actionProperties": {
+            "resultVariable": "authenticatedUser"
+        }
+    },
+    {
+        "activityId": "showAuthenticatedUser",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-repository-show-authenticated-user",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getRepository",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-repository",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "resultVariable": "repositoryDetail"
+        }
+    },
+    {
+        "activityId": "showRepository",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-repository-show-repository",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "listRepositories",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "list-repositories",
+        "actionProperties": {
+            "owner": "doc:/owner",
+            "type": "all",
+            "limit": 10,
+            "resultVariable": "repositories"
+        }
+    },
+    {
+        "activityId": "showRepositories",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-repository-show-repositories",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

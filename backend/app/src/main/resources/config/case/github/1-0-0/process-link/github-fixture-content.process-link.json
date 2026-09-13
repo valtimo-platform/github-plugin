@@ -1,0 +1,127 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-content",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "createBranch",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-branch",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "branchName": "doc:/branchName",
+            "resultVariable": "branch"
+        }
+    },
+    {
+        "activityId": "showBranch",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-content-show-branch",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "writeFile",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-or-update-file",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "path": "doc:/filePath",
+            "commitMessage": "Add a fixture file (GitHub plugin fixture)",
+            "content": "doc:/fileContent",
+            "branch": "doc:/branchName",
+            "resultVariable": "file"
+        }
+    },
+    {
+        "activityId": "showFile",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-content-show-file",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "readFile",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-file-content",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "path": "doc:/filePath",
+            "ref": "doc:/branchName",
+            "resultVariable": "fileRead"
+        }
+    },
+    {
+        "activityId": "showFileRead",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-content-show-file-read",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "readDirectory",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-file-content",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "path": "fixtures",
+            "ref": "doc:/branchName",
+            "resultVariable": "directory"
+        }
+    },
+    {
+        "activityId": "showDirectory",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-content-show-directory",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "deleteBranch",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "rest-request",
+        "actionProperties": {
+            "method": "DELETE",
+            "path": "doc:/branchRefPath",
+            "resultVariable": "branchDeleted"
+        }
+    },
+    {
+        "activityId": "showBranchDeleted",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-content-show-branch-deleted",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

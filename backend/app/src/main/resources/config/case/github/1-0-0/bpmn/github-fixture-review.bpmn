@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_github-fixture-review" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="github-fixture-review" name="GitHub fixture: reviews" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="getPullRequest" name="Pull request ophalen">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequestDetail" name="Toon resultaat: pull request met reviews">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="listReviewThreads" name="Reviewthreads ophalen">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showReviewThreads" name="Toon resultaat: reviewthreads">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="answerThreadSplit" name="Eerste thread beantwoorden?" default="Flow_11">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="replyToReviewComment" name="Antwoorden in de thread">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showReviewReply" name="Toon resultaat: antwoord">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="resolveReviewThread" name="Thread oplossen">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showThreadResolved" name="Toon resultaat: opgeloste thread">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="answerThreadJoin">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="askReviewersSplit" name="Reviewers vragen?" default="Flow_16">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="requestReviewers" name="Reviewers vragen">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showReviewersRequested" name="Toon resultaat: gevraagde reviewers">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="askReviewersJoin">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+      <bpmn:outgoing>Flow_17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="reviewPullRequest" name="Review plaatsen">
+      <bpmn:incoming>Flow_17</bpmn:incoming>
+      <bpmn:outgoing>Flow_18</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showReview" name="Toon resultaat: review">
+      <bpmn:incoming>Flow_18</bpmn:incoming>
+      <bpmn:outgoing>Flow_19</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_1" name="Einde">
+      <bpmn:incoming>Flow_19</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="getPullRequest" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="getPullRequest" targetRef="showPullRequestDetail" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="showPullRequestDetail" targetRef="listReviewThreads" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="listReviewThreads" targetRef="showReviewThreads" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="showReviewThreads" targetRef="answerThreadSplit" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="replyToReviewComment" targetRef="showReviewReply" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="showReviewReply" targetRef="resolveReviewThread" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="resolveReviewThread" targetRef="showThreadResolved" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="answerThreadSplit" targetRef="replyToReviewComment" name="ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valueResolverDelegateService.resolveValue(execution, &quot;doc:/answerFirstThread&quot;) == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="showThreadResolved" targetRef="answerThreadJoin" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="answerThreadSplit" targetRef="answerThreadJoin" name="nee" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="answerThreadJoin" targetRef="askReviewersSplit" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="requestReviewers" targetRef="showReviewersRequested" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="askReviewersSplit" targetRef="requestReviewers" name="ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valueResolverDelegateService.resolveValue(execution, &quot;doc:/requestReviewers&quot;) == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="showReviewersRequested" targetRef="askReviewersJoin" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="askReviewersSplit" targetRef="askReviewersJoin" name="nee" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="askReviewersJoin" targetRef="reviewPullRequest" />
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="reviewPullRequest" targetRef="showReview" />
+    <bpmn:sequenceFlow id="Flow_19" sourceRef="showReview" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_github-fixture-review">
+    <bpmndi:BPMNPlane id="BPMNPlane_github-fixture-review" bpmnElement="github-fixture-review">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="180" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="getPullRequest_di" bpmnElement="getPullRequest">
+        <dc:Bounds x="266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequestDetail_di" bpmnElement="showPullRequestDetail">
+        <dc:Bounds x="466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="listReviewThreads_di" bpmnElement="listReviewThreads">
+        <dc:Bounds x="666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showReviewThreads_di" bpmnElement="showReviewThreads">
+        <dc:Bounds x="866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="answerThreadSplit_di" bpmnElement="answerThreadSplit">
+        <dc:Bounds x="1066" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="replyToReviewComment_di" bpmnElement="replyToReviewComment">
+        <dc:Bounds x="1166" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showReviewReply_di" bpmnElement="showReviewReply">
+        <dc:Bounds x="1366" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="resolveReviewThread_di" bpmnElement="resolveReviewThread">
+        <dc:Bounds x="1566" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showThreadResolved_di" bpmnElement="showThreadResolved">
+        <dc:Bounds x="1766" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="answerThreadJoin_di" bpmnElement="answerThreadJoin">
+        <dc:Bounds x="1966" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="askReviewersSplit_di" bpmnElement="askReviewersSplit">
+        <dc:Bounds x="2066" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="requestReviewers_di" bpmnElement="requestReviewers">
+        <dc:Bounds x="2166" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showReviewersRequested_di" bpmnElement="showReviewersRequested">
+        <dc:Bounds x="2366" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="askReviewersJoin_di" bpmnElement="askReviewersJoin">
+        <dc:Bounds x="2566" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="reviewPullRequest_di" bpmnElement="reviewPullRequest">
+        <dc:Bounds x="2666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showReview_di" bpmnElement="showReview">
+        <dc:Bounds x="2866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="3066" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="216" y="130" />
+        <di:waypoint x="266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="416" y="130" />
+        <di:waypoint x="466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="616" y="130" />
+        <di:waypoint x="666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="816" y="130" />
+        <di:waypoint x="866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1016" y="130" />
+        <di:waypoint x="1066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1316" y="270" />
+        <di:waypoint x="1366" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1516" y="270" />
+        <di:waypoint x="1566" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1716" y="270" />
+        <di:waypoint x="1766" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1116" y="130" />
+        <di:waypoint x="1166" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="1916" y="270" />
+        <di:waypoint x="1966" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="1116" y="130" />
+        <di:waypoint x="1966" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="2016" y="130" />
+        <di:waypoint x="2066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="2316" y="270" />
+        <di:waypoint x="2366" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="2116" y="130" />
+        <di:waypoint x="2166" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="2516" y="270" />
+        <di:waypoint x="2566" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
+        <di:waypoint x="2116" y="130" />
+        <di:waypoint x="2566" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17">
+        <di:waypoint x="2616" y="130" />
+        <di:waypoint x="2666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18_di" bpmnElement="Flow_18">
+        <di:waypoint x="2816" y="130" />
+        <di:waypoint x="2866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19_di" bpmnElement="Flow_19">
+        <di:waypoint x="3016" y="130" />
+        <di:waypoint x="3066" y="130" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

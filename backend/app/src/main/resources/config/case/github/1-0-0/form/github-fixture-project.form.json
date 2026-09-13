@@ -1,0 +1,118 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: projectborden</h4><p>Reads the project cards an issue sits on, with every field value. Writing a field back needs three node ids that only this read can give you, so the usual way to use this fixture is twice: run it once to read the ids out, then again with them filled in and the write switched on.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Projectitems ophalen</li><li class=\"cds--list__item\">Projectveld instellen</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "issueNumber",
+            "type": "number",
+            "input": true,
+            "label": "Issuenummer",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "description": "An issue that is on a project board."
+        },
+        {
+            "key": "writeProjectField",
+            "type": "checkbox",
+            "input": true,
+            "label": "Projectveld schrijven",
+            "tableView": false,
+            "description": "Needs the three ids below, which come out of a first run.",
+            "defaultValue": false
+        },
+        {
+            "key": "projectId",
+            "type": "textfield",
+            "input": true,
+            "label": "Project-id",
+            "tableView": false,
+            "placeholder": "PVT_kwDOA..."
+        },
+        {
+            "key": "itemId",
+            "type": "textfield",
+            "input": true,
+            "label": "Kaart-id",
+            "tableView": false,
+            "placeholder": "PVTI_lADOA..."
+        },
+        {
+            "key": "fieldId",
+            "type": "textfield",
+            "input": true,
+            "label": "Veld-id",
+            "tableView": false,
+            "placeholder": "PVTSSF_lADOA..."
+        },
+        {
+            "key": "fieldValueType",
+            "type": "select",
+            "input": true,
+            "label": "Soort waarde",
+            "tableView": false,
+            "defaultValue": "text",
+            "data": {
+                "values": [
+                    {
+                        "label": "text",
+                        "value": "text"
+                    },
+                    {
+                        "label": "number",
+                        "value": "number"
+                    },
+                    {
+                        "label": "date",
+                        "value": "date"
+                    },
+                    {
+                        "label": "singleSelectOptionId",
+                        "value": "singleSelectOptionId"
+                    },
+                    {
+                        "label": "iterationId",
+                        "value": "iterationId"
+                    }
+                ]
+            },
+            "dataSrc": "values",
+            "widget": "choicesjs"
+        },
+        {
+            "key": "fieldValue",
+            "type": "textfield",
+            "input": true,
+            "label": "Waarde",
+            "tableView": false
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

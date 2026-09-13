@@ -1,0 +1,70 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: issues</h4><p>Creates a label and an issue, comments on it, reads it back with its comments and timeline, finds it by list and by search, then labels and closes it. Leaves the issue closed rather than deleted — GitHub has no delete, and a closed fixture issue is the tidiest end state there is.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Label aanmaken</li><li class=\"cds--list__item\">Issue aanmaken</li><li class=\"cds--list__item\">Reageren op issue</li><li class=\"cds--list__item\">Issue ophalen</li><li class=\"cds--list__item\">Issues opsommen</li><li class=\"cds--list__item\">Issues zoeken</li><li class=\"cds--list__item\">Issue bijwerken en sluiten</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "runId",
+            "type": "hidden",
+            "input": true,
+            "label": "Run-id",
+            "tableView": false,
+            "calculateValue": "value = data.runId ? data.runId : String(Date.now());"
+        },
+        {
+            "key": "issueTitle",
+            "type": "textfield",
+            "input": true,
+            "label": "Issuetitel",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "defaultValue": "GitHub plugin fixture issue"
+        },
+        {
+            "key": "issueBody",
+            "type": "textarea",
+            "input": true,
+            "label": "Issuetekst",
+            "tableView": false,
+            "defaultValue": "Opened by the GitHub plugin fixture. Safe to close.",
+            "rows": 4,
+            "autoExpand": false
+        },
+        {
+            "key": "searchQuery",
+            "type": "hidden",
+            "input": true,
+            "label": "Zoekopdracht",
+            "tableView": false,
+            "calculateValue": "value = 'repo:' + (data.repository || '') + ' is:issue label:github-plugin-fixture';"
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

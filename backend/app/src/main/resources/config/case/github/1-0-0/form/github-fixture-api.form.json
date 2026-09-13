@@ -1,0 +1,114 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: REST en GraphQL</h4><p>The two escape hatches, with whatever path and query you type into the start form. Both store the answer exactly as GitHub sent it, so this is also the fixture to reach for when you want to see a payload before it has been trimmed.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">REST-aanvraag</li><li class=\"cds--list__item\">GraphQL-query</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "restMethod",
+            "type": "select",
+            "input": true,
+            "label": "Methode",
+            "tableView": false,
+            "defaultValue": "GET",
+            "data": {
+                "values": [
+                    {
+                        "label": "GET",
+                        "value": "GET"
+                    },
+                    {
+                        "label": "POST",
+                        "value": "POST"
+                    },
+                    {
+                        "label": "PATCH",
+                        "value": "PATCH"
+                    },
+                    {
+                        "label": "PUT",
+                        "value": "PUT"
+                    },
+                    {
+                        "label": "DELETE",
+                        "value": "DELETE"
+                    }
+                ]
+            },
+            "dataSrc": "values",
+            "widget": "choicesjs"
+        },
+        {
+            "key": "restPath",
+            "type": "textfield",
+            "input": true,
+            "label": "Pad",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "description": "Relative to the REST root of the plugin configuration.",
+            "calculateValue": "value = data.restPath ? data.restPath : ('/repos/' + (data.repository || '') + '/labels');",
+            "allowCalculateOverride": true
+        },
+        {
+            "key": "restBody",
+            "type": "textarea",
+            "input": true,
+            "label": "Body",
+            "tableView": false,
+            "description": "JSON. Leave empty for a request without one.",
+            "rows": 3,
+            "autoExpand": false
+        },
+        {
+            "key": "graphqlQuery",
+            "type": "textarea",
+            "input": true,
+            "label": "Query",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "defaultValue": "query($owner:String!, $name:String!) {\n  viewer { login }\n  repository(owner: $owner, name: $name) {\n    name\n    defaultBranchRef { name }\n    issues(states: OPEN) { totalCount }\n  }\n}",
+            "rows": 8,
+            "autoExpand": false
+        },
+        {
+            "key": "graphqlVariables",
+            "type": "textarea",
+            "input": true,
+            "label": "Variabelen",
+            "tableView": false,
+            "calculateValue": "value = data.graphqlVariables ? data.graphqlVariables : JSON.stringify({owner: (data.repository || '').split('/')[0], name: (data.repository || '').split('/')[1]});",
+            "allowCalculateOverride": true,
+            "rows": 3,
+            "autoExpand": false
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

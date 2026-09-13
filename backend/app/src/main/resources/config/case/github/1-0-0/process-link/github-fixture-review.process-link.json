@@ -1,0 +1,151 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-review",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getPullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "doc:/pullRequestNumber",
+            "includeReviews": true,
+            "resultVariable": "pullRequestDetail"
+        }
+    },
+    {
+        "activityId": "showPullRequestDetail",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-review-show-pull-request-detail",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "listReviewThreads",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "list-review-threads",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "doc:/pullRequestNumber",
+            "onlyUnresolved": true,
+            "resultVariable": "reviewThreads"
+        }
+    },
+    {
+        "activityId": "showReviewThreads",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-review-show-review-threads",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "replyToReviewComment",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "reply-to-review-comment",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "doc:/pullRequestNumber",
+            "commentId": "pv:reviewThreads.items.0.comments.0.id",
+            "body": "Answered by the GitHub plugin fixture.",
+            "resultVariable": "reviewReply"
+        }
+    },
+    {
+        "activityId": "showReviewReply",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-review-show-review-reply",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "resolveReviewThread",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "resolve-review-thread",
+        "actionProperties": {
+            "threadId": "pv:reviewThreads.items.0.id",
+            "resolve": true,
+            "resultVariable": "threadResolved"
+        }
+    },
+    {
+        "activityId": "showThreadResolved",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-review-show-thread-resolved",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "requestReviewers",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "request-reviewers",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "doc:/pullRequestNumber",
+            "reviewers": "doc:/reviewerLogins",
+            "resultVariable": "reviewersRequested"
+        }
+    },
+    {
+        "activityId": "showReviewersRequested",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-review-show-reviewers-requested",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "reviewPullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "review-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "doc:/pullRequestNumber",
+            "event": "COMMENT",
+            "body": "Reviewed by the GitHub plugin fixture.",
+            "resultVariable": "review"
+        }
+    },
+    {
+        "activityId": "showReview",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-review-show-review",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

@@ -1,0 +1,41 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "pv.pullRequestClosed",
+            "type": "hidden",
+            "input": true,
+            "label": "pullRequestClosed",
+            "tableView": false,
+            "persistent": false
+        },
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>Close pull request</h4><p>The answer as the plugin stored it, in process variable <code>pullRequestClosed</code>.</p>"
+        },
+        {
+            "key": "pv.weergave",
+            "type": "textarea",
+            "input": true,
+            "tableView": false,
+            "label": "Close pull request",
+            "disabled": true,
+            "rows": 20,
+            "autoExpand": false,
+            "calculateValue": "var d = data || {}; var v = d['pv:pullRequestClosed']; if (v === undefined && d.pv) { v = d.pv['pullRequestClosed']; } value = (v === undefined || v === null) ? '(geen data)' : (typeof v === 'string' ? v : JSON.stringify(v, null, 4));",
+            "persistent": false
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "tableView": false,
+            "label": "Volgende",
+            "disableOnInvalid": true
+        }
+    ]
+}

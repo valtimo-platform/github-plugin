@@ -44,21 +44,65 @@ npm run libs-build-all
 npm start
 ```
 
-## Seeing it work
+## Seeing it work: the fixtures
 
-One case is autodeployed. **Example** has two service tasks: the first reads issue 1 of the
-repository in `GITHUB_REPOSITORY` into a process variable called `issue`, and the second
-comments on it. Start it from the UI and the comment appears on GitHub.
+One case type is autodeployed, **GitHub**, holding eight fixture processes. Between them
+they exercise all 33 actions against a real repository. Start one from the case list, fill
+in the repository on its start form, and step through: every action is followed by a task
+showing exactly what it stored, so you can read the answer before deciding whether the next
+step is what you wanted.
+
+| Fixture                      | Exercises                                                                                                          |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **repository**               | `get-authenticated-user`, `get-repository`, `list-repositories`                                                     |
+| **issues**                   | `create-label`, `create-issue`, `comment`, `get-issue`, `list-issues`, `search-issues`, `update-issue`              |
+| **bestanden en branches**    | `create-branch`, `create-or-update-file`, `get-file-content` (file and directory), `rest-request`                   |
+| **pull requests**            | the lifecycle, ending in `merge-pull-request` or a close                                                            |
+| **reviews**                  | `get-pull-request`, `list-review-threads`, `reply-to-review-comment`, `resolve-review-thread`, `review-pull-request`, `request-reviewers` |
+| **checks en workflows**      | `list-workflow-runs`, `get-workflow-run`, `get-job-logs`, `get-check-status`, `rerun-workflow`                      |
+| **projectborden**            | `get-project-items`, `set-project-item-field`                                                                       |
+| **REST en GraphQL**          | `rest-request`, `graphql-query`                                                                                     |
+
+**Start with the repository fixture.** It writes nothing at all, so it is the quickest way
+to find out whether a configuration works and which identity it acts as — which is also what
+decides whether `review-pull-request` will be allowed to approve anything, since GitHub does
+not let an account approve its own pull request.
+
+### What the fixtures write, and what they clean up
+
+These run against real GitHub. Point them at a throwaway repository.
+
+The fixtures that create things clean up after themselves where GitHub allows it: branches
+are deleted again (through `rest-request`, since there is no delete-branch action), pull
+requests are closed, and the fixture issue is closed — GitHub has no delete for an issue, so
+closed is the tidiest end state available.
+
+**Every step that cannot be undone is behind a checkbox, off by default:**
+
+- merging a pull request, which writes to the default branch — off means close instead
+- answering and resolving a review thread, which writes into somebody else's review
+- requesting reviewers, which notifies people
+- re-running a workflow, which costs a CI build
+- writing a project field
+
+### Fixtures that need something to exist first
+
+Three of them read before they write, and have nothing to read in an empty repository:
+
+- **reviews** wants a pull request number that already has inline review comments on it.
+  Run the pull request fixture first and feed its number in, or point it at a real one.
+- **checks** needs a repository with GitHub Actions history — with no runs, the first step
+  returns an empty list and the steps after it have no run to open.
+- **projectborden** needs an issue that sits on a project board. Writing a field back needs
+  three node ids that only the read gives you, so the usual way to use it is twice: once to
+  read the ids out, then again with them filled in and the write switched on.
+
+Each run computes its own `runId` from the clock, so branch and file names are unique and
+running a fixture twice does not collide with itself.
 
 The plugin configuration is autodeployed from
 `backend/app/src/main/resources/config/plugin/github.pluginconfig.json`, which reads its token
 and repository out of the environment rather than holding them.
-
-### Checking a configuration before building on it
-
-`get-authenticated-user` takes no properties beyond a result variable and reports which
-account the token belongs to. It is the cheapest way to find out whether a configuration
-works, and which identity a pull request opened through it will appear to come from.
 
 ### Keycloak users
 

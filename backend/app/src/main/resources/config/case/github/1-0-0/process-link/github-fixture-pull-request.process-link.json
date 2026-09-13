@@ -1,0 +1,229 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-pull-request",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "createBranch",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-branch",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "branchName": "doc:/branchName",
+            "resultVariable": "branch"
+        }
+    },
+    {
+        "activityId": "writeFile",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-or-update-file",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "path": "doc:/filePath",
+            "commitMessage": "Add a fixture file (GitHub plugin fixture)",
+            "content": "doc:/fileContent",
+            "branch": "doc:/branchName",
+            "resultVariable": "file"
+        }
+    },
+    {
+        "activityId": "createPullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "title": "GitHub plugin fixture pull request",
+            "body": "Opened by the GitHub plugin fixture. Safe to close.",
+            "head": "doc:/branchName",
+            "draft": true,
+            "resultVariable": "pullRequest"
+        }
+    },
+    {
+        "activityId": "showPullRequest",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-pull-request",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getPullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "pv:pullRequest.number",
+            "includeFiles": true,
+            "includeReviews": true,
+            "includeComments": true,
+            "includeChecks": true,
+            "resultVariable": "pullRequestDetail"
+        }
+    },
+    {
+        "activityId": "showPullRequestDetail",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-pull-request-detail",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "listPullRequests",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "list-pull-requests",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "state": "open",
+            "limit": 10,
+            "resultVariable": "pullRequests"
+        }
+    },
+    {
+        "activityId": "showPullRequests",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-pull-requests",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "markReady",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "set-pull-request-draft",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "pv:pullRequest.number",
+            "draft": false,
+            "resultVariable": "pullRequestReady"
+        }
+    },
+    {
+        "activityId": "showPullRequestReady",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-pull-request-ready",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "updatePullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "update-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "pv:pullRequest.number",
+            "title": "GitHub plugin fixture pull request (bijgewerkt)",
+            "addLabels": "github-plugin-fixture",
+            "resultVariable": "pullRequestUpdated"
+        }
+    },
+    {
+        "activityId": "showPullRequestUpdated",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-pull-request-updated",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "mergePullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "merge-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "pv:pullRequest.number",
+            "mergeMethod": "squash",
+            "expectedHeadSha": "pv:pullRequest.headSha",
+            "resultVariable": "mergeResult"
+        }
+    },
+    {
+        "activityId": "showMergeResult",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-merge-result",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "closePullRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "update-pull-request",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "pullRequestNumber": "pv:pullRequest.number",
+            "state": "closed",
+            "resultVariable": "pullRequestClosed"
+        }
+    },
+    {
+        "activityId": "showPullRequestClosed",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-pull-request-closed",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "deleteBranch",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "rest-request",
+        "actionProperties": {
+            "method": "DELETE",
+            "path": "doc:/branchRefPath",
+            "resultVariable": "branchDeleted"
+        }
+    },
+    {
+        "activityId": "showBranchDeleted",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-pull-request-show-branch-deleted",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

@@ -1,0 +1,125 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-checks",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "listWorkflowRuns",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "list-workflow-runs",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "limit": 5,
+            "resultVariable": "workflowRuns"
+        }
+    },
+    {
+        "activityId": "showWorkflowRuns",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-checks-show-workflow-runs",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getWorkflowRun",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-workflow-run",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "runId": "pv:workflowRuns.items.0.id",
+            "includeJobs": true,
+            "resultVariable": "workflowRun"
+        }
+    },
+    {
+        "activityId": "showWorkflowRun",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-checks-show-workflow-run",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getJobLogs",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-job-logs",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "jobId": "pv:workflowRun.jobs.0.id",
+            "maxLines": 100,
+            "resultVariable": "jobLogs"
+        }
+    },
+    {
+        "activityId": "showJobLogs",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-checks-show-job-logs",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getCheckStatus",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-check-status",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "ref": "pv:workflowRuns.items.0.headSha",
+            "resultVariable": "checkStatus"
+        }
+    },
+    {
+        "activityId": "showCheckStatus",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-checks-show-check-status",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "rerunWorkflow",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "rerun-workflow",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "runId": "pv:workflowRuns.items.0.id",
+            "onlyFailed": true,
+            "resultVariable": "rerunResult"
+        }
+    },
+    {
+        "activityId": "showRerunResult",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-checks-show-rerun-result",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

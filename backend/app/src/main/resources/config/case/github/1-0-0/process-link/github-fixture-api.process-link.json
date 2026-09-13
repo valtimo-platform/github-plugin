@@ -1,0 +1,57 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-api",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "restRequest",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "rest-request",
+        "actionProperties": {
+            "method": "doc:/restMethod",
+            "path": "doc:/restPath",
+            "body": "doc:/restBody",
+            "resultVariable": "restResponse"
+        }
+    },
+    {
+        "activityId": "showRestResponse",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-api-show-rest-response",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "graphqlQuery",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "graphql-query",
+        "actionProperties": {
+            "query": "doc:/graphqlQuery",
+            "variables": "doc:/graphqlVariables",
+            "resultVariable": "graphqlResponse"
+        }
+    },
+    {
+        "activityId": "showGraphqlResponse",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-api-show-graphql-response",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

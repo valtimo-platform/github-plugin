@@ -1,0 +1,182 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-issue",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "createLabel",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-label",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "name": "github-plugin-fixture",
+            "color": "5319e7",
+            "description": "Created by the GitHub plugin fixtures",
+            "resultVariable": "label"
+        }
+    },
+    {
+        "activityId": "showLabel",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-label",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "createIssue",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "create-issue",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "title": "doc:/issueTitle",
+            "body": "doc:/issueBody",
+            "labels": "github-plugin-fixture",
+            "resultVariable": "issue"
+        }
+    },
+    {
+        "activityId": "showIssue",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-issue",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "commentOnIssue",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "comment",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "issueNumber": "pv:issue.number",
+            "body": "Comment posted by the GitHub plugin fixture.",
+            "resultVariable": "issueComment"
+        }
+    },
+    {
+        "activityId": "showIssueComment",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-issue-comment",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getIssue",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-issue",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "issueNumber": "pv:issue.number",
+            "includeComments": true,
+            "includeTimeline": true,
+            "resultVariable": "issueDetail"
+        }
+    },
+    {
+        "activityId": "showIssueDetail",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-issue-detail",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "listIssues",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "list-issues",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "state": "open",
+            "labels": "github-plugin-fixture",
+            "limit": 10,
+            "resultVariable": "issues"
+        }
+    },
+    {
+        "activityId": "showIssues",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-issues",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "searchIssues",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "search-issues",
+        "actionProperties": {
+            "query": "doc:/searchQuery",
+            "sort": "updated",
+            "order": "desc",
+            "limit": 10,
+            "resultVariable": "searchResults"
+        }
+    },
+    {
+        "activityId": "showSearchResults",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-search-results",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "updateIssue",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "update-issue",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "issueNumber": "pv:issue.number",
+            "title": "doc:/issueTitle",
+            "addLabels": "github-plugin-fixture-done",
+            "removeLabels": "github-plugin-fixture",
+            "state": "closed",
+            "stateReason": "completed",
+            "resultVariable": "issueClosed"
+        }
+    },
+    {
+        "activityId": "showIssueClosed",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-issue-show-issue-closed",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]

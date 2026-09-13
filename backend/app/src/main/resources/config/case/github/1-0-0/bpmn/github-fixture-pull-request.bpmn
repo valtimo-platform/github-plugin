@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_github-fixture-pull-request" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="github-fixture-pull-request" name="GitHub fixture: pull requests" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="createBranch" name="Branch aanmaken">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="writeFile" name="Bestand committen">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="createPullRequest" name="Pull request aanmaken">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequest" name="Toon resultaat: pull request">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="getPullRequest" name="Pull request ophalen">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequestDetail" name="Toon resultaat: pull request met details">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="listPullRequests" name="Pull requests opsommen">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequests" name="Toon resultaat: pull requests">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="markReady" name="Pull request klaarzetten">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequestReady" name="Toon resultaat: klaar voor review">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="updatePullRequest" name="Pull request bijwerken">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequestUpdated" name="Toon resultaat: bijgewerkte pull request">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="mergeOrCloseSplit" name="Mergen?" default="Flow_17">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_17</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="mergePullRequest" name="Pull request mergen">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showMergeResult" name="Toon resultaat: merge">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_18</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="closePullRequest" name="Pull request sluiten">
+      <bpmn:incoming>Flow_17</bpmn:incoming>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showPullRequestClosed" name="Toon resultaat: gesloten pull request">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+      <bpmn:outgoing>Flow_19</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="mergeOrCloseJoin">
+      <bpmn:incoming>Flow_18</bpmn:incoming>
+      <bpmn:incoming>Flow_19</bpmn:incoming>
+      <bpmn:outgoing>Flow_20</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="deleteBranch" name="Branch opruimen">
+      <bpmn:incoming>Flow_20</bpmn:incoming>
+      <bpmn:outgoing>Flow_21</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showBranchDeleted" name="Toon resultaat: branch verwijderd">
+      <bpmn:incoming>Flow_21</bpmn:incoming>
+      <bpmn:outgoing>Flow_22</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_1" name="Einde">
+      <bpmn:incoming>Flow_22</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="createBranch" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="createBranch" targetRef="writeFile" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="writeFile" targetRef="createPullRequest" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="createPullRequest" targetRef="showPullRequest" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="showPullRequest" targetRef="getPullRequest" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="getPullRequest" targetRef="showPullRequestDetail" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="showPullRequestDetail" targetRef="listPullRequests" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="listPullRequests" targetRef="showPullRequests" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="showPullRequests" targetRef="markReady" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="markReady" targetRef="showPullRequestReady" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="showPullRequestReady" targetRef="updatePullRequest" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="updatePullRequest" targetRef="showPullRequestUpdated" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="showPullRequestUpdated" targetRef="mergeOrCloseSplit" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="mergePullRequest" targetRef="showMergeResult" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="mergeOrCloseSplit" targetRef="mergePullRequest" name="ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valueResolverDelegateService.resolveValue(execution, &quot;doc:/mergePullRequest&quot;) == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="closePullRequest" targetRef="showPullRequestClosed" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="mergeOrCloseSplit" targetRef="closePullRequest" name="nee" />
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="showMergeResult" targetRef="mergeOrCloseJoin" />
+    <bpmn:sequenceFlow id="Flow_19" sourceRef="showPullRequestClosed" targetRef="mergeOrCloseJoin" />
+    <bpmn:sequenceFlow id="Flow_20" sourceRef="mergeOrCloseJoin" targetRef="deleteBranch" />
+    <bpmn:sequenceFlow id="Flow_21" sourceRef="deleteBranch" targetRef="showBranchDeleted" />
+    <bpmn:sequenceFlow id="Flow_22" sourceRef="showBranchDeleted" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_github-fixture-pull-request">
+    <bpmndi:BPMNPlane id="BPMNPlane_github-fixture-pull-request" bpmnElement="github-fixture-pull-request">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="180" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="createBranch_di" bpmnElement="createBranch">
+        <dc:Bounds x="266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="writeFile_di" bpmnElement="writeFile">
+        <dc:Bounds x="466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="createPullRequest_di" bpmnElement="createPullRequest">
+        <dc:Bounds x="666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequest_di" bpmnElement="showPullRequest">
+        <dc:Bounds x="866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="getPullRequest_di" bpmnElement="getPullRequest">
+        <dc:Bounds x="1066" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequestDetail_di" bpmnElement="showPullRequestDetail">
+        <dc:Bounds x="1266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="listPullRequests_di" bpmnElement="listPullRequests">
+        <dc:Bounds x="1466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequests_di" bpmnElement="showPullRequests">
+        <dc:Bounds x="1666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="markReady_di" bpmnElement="markReady">
+        <dc:Bounds x="1866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequestReady_di" bpmnElement="showPullRequestReady">
+        <dc:Bounds x="2066" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="updatePullRequest_di" bpmnElement="updatePullRequest">
+        <dc:Bounds x="2266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequestUpdated_di" bpmnElement="showPullRequestUpdated">
+        <dc:Bounds x="2466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="mergeOrCloseSplit_di" bpmnElement="mergeOrCloseSplit">
+        <dc:Bounds x="2666" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="mergePullRequest_di" bpmnElement="mergePullRequest">
+        <dc:Bounds x="2766" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showMergeResult_di" bpmnElement="showMergeResult">
+        <dc:Bounds x="2966" y="230" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="closePullRequest_di" bpmnElement="closePullRequest">
+        <dc:Bounds x="2766" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showPullRequestClosed_di" bpmnElement="showPullRequestClosed">
+        <dc:Bounds x="2966" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="mergeOrCloseJoin_di" bpmnElement="mergeOrCloseJoin">
+        <dc:Bounds x="3166" y="105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="deleteBranch_di" bpmnElement="deleteBranch">
+        <dc:Bounds x="3266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showBranchDeleted_di" bpmnElement="showBranchDeleted">
+        <dc:Bounds x="3466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="3666" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="216" y="130" />
+        <di:waypoint x="266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="416" y="130" />
+        <di:waypoint x="466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="616" y="130" />
+        <di:waypoint x="666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="816" y="130" />
+        <di:waypoint x="866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1016" y="130" />
+        <di:waypoint x="1066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1216" y="130" />
+        <di:waypoint x="1266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1416" y="130" />
+        <di:waypoint x="1466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1616" y="130" />
+        <di:waypoint x="1666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1816" y="130" />
+        <di:waypoint x="1866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="2016" y="130" />
+        <di:waypoint x="2066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="2216" y="130" />
+        <di:waypoint x="2266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="2416" y="130" />
+        <di:waypoint x="2466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="2616" y="130" />
+        <di:waypoint x="2666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="2916" y="270" />
+        <di:waypoint x="2966" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="2716" y="130" />
+        <di:waypoint x="2766" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
+        <di:waypoint x="2916" y="130" />
+        <di:waypoint x="2966" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17">
+        <di:waypoint x="2716" y="130" />
+        <di:waypoint x="2766" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18_di" bpmnElement="Flow_18">
+        <di:waypoint x="3116" y="270" />
+        <di:waypoint x="3166" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19_di" bpmnElement="Flow_19">
+        <di:waypoint x="3116" y="130" />
+        <di:waypoint x="3166" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_20_di" bpmnElement="Flow_20">
+        <di:waypoint x="3216" y="130" />
+        <di:waypoint x="3266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_21_di" bpmnElement="Flow_21">
+        <di:waypoint x="3416" y="130" />
+        <di:waypoint x="3466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_22_di" bpmnElement="Flow_22">
+        <di:waypoint x="3616" y="130" />
+        <di:waypoint x="3666" y="130" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

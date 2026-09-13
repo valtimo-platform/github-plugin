@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_github-fixture-content" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="github-fixture-content" name="GitHub fixture: bestanden en branches" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="createBranch" name="Branch aanmaken">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showBranch" name="Toon resultaat: branch">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="writeFile" name="Bestand committen">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showFile" name="Toon resultaat: commit">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="readFile" name="Bestand teruglezen">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showFileRead" name="Toon resultaat: bestandsinhoud">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="readDirectory" name="Map uitlezen">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showDirectory" name="Toon resultaat: mapinhoud">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="deleteBranch" name="Branch opruimen">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showBranchDeleted" name="Toon resultaat: branch verwijderd">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_1" name="Einde">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="createBranch" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="createBranch" targetRef="showBranch" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="showBranch" targetRef="writeFile" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="writeFile" targetRef="showFile" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="showFile" targetRef="readFile" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="readFile" targetRef="showFileRead" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="showFileRead" targetRef="readDirectory" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="readDirectory" targetRef="showDirectory" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="showDirectory" targetRef="deleteBranch" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="deleteBranch" targetRef="showBranchDeleted" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="showBranchDeleted" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_github-fixture-content">
+    <bpmndi:BPMNPlane id="BPMNPlane_github-fixture-content" bpmnElement="github-fixture-content">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="180" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="createBranch_di" bpmnElement="createBranch">
+        <dc:Bounds x="266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showBranch_di" bpmnElement="showBranch">
+        <dc:Bounds x="466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="writeFile_di" bpmnElement="writeFile">
+        <dc:Bounds x="666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showFile_di" bpmnElement="showFile">
+        <dc:Bounds x="866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="readFile_di" bpmnElement="readFile">
+        <dc:Bounds x="1066" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showFileRead_di" bpmnElement="showFileRead">
+        <dc:Bounds x="1266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="readDirectory_di" bpmnElement="readDirectory">
+        <dc:Bounds x="1466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showDirectory_di" bpmnElement="showDirectory">
+        <dc:Bounds x="1666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="deleteBranch_di" bpmnElement="deleteBranch">
+        <dc:Bounds x="1866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showBranchDeleted_di" bpmnElement="showBranchDeleted">
+        <dc:Bounds x="2066" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="2266" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="216" y="130" />
+        <di:waypoint x="266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="416" y="130" />
+        <di:waypoint x="466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="616" y="130" />
+        <di:waypoint x="666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="816" y="130" />
+        <di:waypoint x="866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1016" y="130" />
+        <di:waypoint x="1066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1216" y="130" />
+        <di:waypoint x="1266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1416" y="130" />
+        <di:waypoint x="1466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1616" y="130" />
+        <di:waypoint x="1666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1816" y="130" />
+        <di:waypoint x="1866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="2016" y="130" />
+        <di:waypoint x="2066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="2216" y="130" />
+        <di:waypoint x="2266" y="130" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

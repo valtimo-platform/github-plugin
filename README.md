@@ -30,9 +30,17 @@ There is **no polling**. Nothing here wakes up on its own, and installing this p
 database tables; a process that should run every ten minutes says so with a BPMN timer start
 event and calls `list-issues`.
 
+## Trying it
+
+The sandbox autodeploys a **GitHub** case type holding eight fixture processes that between
+them exercise all 33 actions against a real repository, each step followed by a task showing
+what it stored. Everything irreversible — merging, re-running CI, writing into somebody
+else's review — is behind a checkbox that is off by default. See
+[getting started](documentation/getting-started.md#seeing-it-work-the-fixtures).
+
 ## Documentation
 
-- [Getting started](documentation/getting-started.md) — running the sandbox, and developing on it
+- [Getting started](documentation/getting-started.md) — running the sandbox and its fixtures, and developing on it
 - [Plugin documentation](documentation/plugin.md) — the actions, their properties and what they return
 - [Release notes](documentation/release-notes.md) — version history
 

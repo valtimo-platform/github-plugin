@@ -1,0 +1,82 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: pull requests</h4><p>The whole lifecycle: branch, commit, open a draft pull request, read it back with its files and checks, mark it ready, label it, and then either merge it or close it. Merging is off by default, because it is the one step here that writes to the default branch.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Branch aanmaken</li><li class=\"cds--list__item\">Bestand committen</li><li class=\"cds--list__item\">Pull request aanmaken</li><li class=\"cds--list__item\">Pull request ophalen</li><li class=\"cds--list__item\">Pull requests opsommen</li><li class=\"cds--list__item\">Pull request klaarzetten</li><li class=\"cds--list__item\">Pull request bijwerken</li><li class=\"cds--list__item\">Pull request mergen</li><li class=\"cds--list__item\">Pull request sluiten</li><li class=\"cds--list__item\">Branch opruimen</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "runId",
+            "type": "hidden",
+            "input": true,
+            "label": "Run-id",
+            "tableView": false,
+            "calculateValue": "value = data.runId ? data.runId : String(Date.now());"
+        },
+        {
+            "key": "branchName",
+            "type": "hidden",
+            "input": true,
+            "label": "Branchnaam",
+            "tableView": false,
+            "calculateValue": "value = 'github-plugin-fixture/' + (data.runId || '');"
+        },
+        {
+            "key": "filePath",
+            "type": "hidden",
+            "input": true,
+            "label": "Bestandspad",
+            "tableView": false,
+            "calculateValue": "value = 'fixtures/github-plugin-' + (data.runId || '') + '.md';"
+        },
+        {
+            "key": "fileContent",
+            "type": "hidden",
+            "input": true,
+            "label": "Bestandsinhoud",
+            "tableView": false,
+            "calculateValue": "value = '# GitHub plugin fixture\\n\\nWritten by run ' + (data.runId || '') + '.\\n';"
+        },
+        {
+            "key": "branchRefPath",
+            "type": "hidden",
+            "input": true,
+            "label": "Branch-ref-pad",
+            "tableView": false,
+            "calculateValue": "value = '/repos/' + (data.repository || '') + '/git/refs/heads/github-plugin-fixture/' + (data.runId || '');"
+        },
+        {
+            "key": "mergePullRequest",
+            "type": "checkbox",
+            "input": true,
+            "label": "Pull request mergen in plaats van sluiten",
+            "tableView": false,
+            "description": "Off closes the pull request instead. On writes to the default branch of the repository.",
+            "defaultValue": false
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

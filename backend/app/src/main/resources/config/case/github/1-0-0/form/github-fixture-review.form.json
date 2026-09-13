@@ -1,0 +1,71 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: reviews</h4><p>Works on a pull request that already exists — run the pull request fixture first and feed its number in here, or point it at a real one. Reads the inline review conversations, and optionally answers and resolves the first open one. Both write steps are off by default: they write into somebody else's review.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Pull request ophalen</li><li class=\"cds--list__item\">Reviewthreads ophalen</li><li class=\"cds--list__item\">Antwoorden in de thread</li><li class=\"cds--list__item\">Thread oplossen</li><li class=\"cds--list__item\">Reviewers vragen</li><li class=\"cds--list__item\">Review plaatsen</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "pullRequestNumber",
+            "type": "number",
+            "input": true,
+            "label": "Pull-requestnummer",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "description": "A pull request that already has inline review comments on it."
+        },
+        {
+            "key": "answerFirstThread",
+            "type": "checkbox",
+            "input": true,
+            "label": "Eerste openstaande thread beantwoorden en oplossen",
+            "tableView": false,
+            "description": "Writes a reply into somebody else's review conversation and marks it resolved. Needs at least one unresolved thread.",
+            "defaultValue": false
+        },
+        {
+            "key": "requestReviewers",
+            "type": "checkbox",
+            "input": true,
+            "label": "Reviewers vragen",
+            "tableView": false,
+            "description": "Sends a review request, which notifies the people named below.",
+            "defaultValue": false
+        },
+        {
+            "key": "reviewerLogins",
+            "type": "textfield",
+            "input": true,
+            "label": "Reviewers",
+            "tableView": false,
+            "placeholder": "Klaas-Ritense, theo-ritense",
+            "description": "Comma separated GitHub logins. Nobody can be asked to review their own pull request."
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

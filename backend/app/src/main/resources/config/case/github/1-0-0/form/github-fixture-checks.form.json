@@ -1,0 +1,42 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: checks en workflows</h4><p>Reads the most recent Actions runs, opens the newest one with its jobs, tails the log of its first job, and reports whether its commit is green. Needs a repository that has Actions history — with none, the first step returns nothing and the steps after it have no run to read. Re-running is off by default, because it costs a build.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Workflow-runs opsommen</li><li class=\"cds--list__item\">Workflow-run ophalen</li><li class=\"cds--list__item\">Joblogboek ophalen</li><li class=\"cds--list__item\">Checkstatus ophalen</li><li class=\"cds--list__item\">Workflow opnieuw uitvoeren</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "rerunWorkflow",
+            "type": "checkbox",
+            "input": true,
+            "label": "Gefaalde jobs opnieuw uitvoeren",
+            "tableView": false,
+            "description": "Costs a CI build on the repository.",
+            "defaultValue": false
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

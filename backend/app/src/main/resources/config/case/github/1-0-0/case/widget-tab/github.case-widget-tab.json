@@ -1,0 +1,76 @@
+[
+    {
+        "key": "summary",
+        "widgets": [
+            {
+                "type": "fields",
+                "key": "fixture-input",
+                "title": "Fixture-invoer",
+                "width": 2,
+                "highContrast": false,
+                "properties": {
+                    "columns": [
+                        [
+                            {
+                                "key": "repository",
+                                "title": "Repository",
+                                "value": "doc:/repository",
+                                "displayProperties": {
+                                    "type": "text",
+                                    "hideWhenEmpty": true
+                                }
+                            },
+                            {
+                                "key": "runId",
+                                "title": "Run-id",
+                                "value": "doc:/runId",
+                                "displayProperties": {
+                                    "type": "text",
+                                    "hideWhenEmpty": true
+                                }
+                            },
+                            {
+                                "key": "branchName",
+                                "title": "Branch",
+                                "value": "doc:/branchName",
+                                "displayProperties": {
+                                    "type": "text",
+                                    "hideWhenEmpty": true
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "key": "issueNumber",
+                                "title": "Issuenummer",
+                                "value": "doc:/issueNumber",
+                                "displayProperties": {
+                                    "type": "text",
+                                    "hideWhenEmpty": true
+                                }
+                            },
+                            {
+                                "key": "pullRequestNumber",
+                                "title": "Pull-requestnummer",
+                                "value": "doc:/pullRequestNumber",
+                                "displayProperties": {
+                                    "type": "text",
+                                    "hideWhenEmpty": true
+                                }
+                            },
+                            {
+                                "key": "filePath",
+                                "title": "Bestandspad",
+                                "value": "doc:/filePath",
+                                "displayProperties": {
+                                    "type": "text",
+                                    "hideWhenEmpty": true
+                                }
+                            }
+                        ]
+                    ]
+                }
+            }
+        ]
+    }
+]

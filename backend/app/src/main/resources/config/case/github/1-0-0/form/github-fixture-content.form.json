@@ -1,0 +1,73 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: bestanden en branches</h4><p>Branches, commits a file onto that branch, reads it back, lists the directory it went into, and deletes the branch again. The delete is a rest-request: there is no delete-branch action, which is exactly the kind of gap the escape hatch exists for.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Branch aanmaken</li><li class=\"cds--list__item\">Bestand committen</li><li class=\"cds--list__item\">Bestand teruglezen</li><li class=\"cds--list__item\">Map uitlezen</li><li class=\"cds--list__item\">Branch opruimen</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "runId",
+            "type": "hidden",
+            "input": true,
+            "label": "Run-id",
+            "tableView": false,
+            "calculateValue": "value = data.runId ? data.runId : String(Date.now());"
+        },
+        {
+            "key": "branchName",
+            "type": "hidden",
+            "input": true,
+            "label": "Branchnaam",
+            "tableView": false,
+            "calculateValue": "value = 'github-plugin-fixture/' + (data.runId || '');"
+        },
+        {
+            "key": "filePath",
+            "type": "hidden",
+            "input": true,
+            "label": "Bestandspad",
+            "tableView": false,
+            "calculateValue": "value = 'fixtures/github-plugin-' + (data.runId || '') + '.md';"
+        },
+        {
+            "key": "fileContent",
+            "type": "hidden",
+            "input": true,
+            "label": "Bestandsinhoud",
+            "tableView": false,
+            "calculateValue": "value = '# GitHub plugin fixture\\n\\nWritten by run ' + (data.runId || '') + '.\\n';"
+        },
+        {
+            "key": "branchRefPath",
+            "type": "hidden",
+            "input": true,
+            "label": "Branch-ref-pad",
+            "tableView": false,
+            "calculateValue": "value = '/repos/' + (data.repository || '') + '/git/refs/heads/github-plugin-fixture/' + (data.runId || '');"
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_github-fixture-issue" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="github-fixture-issue" name="GitHub fixture: issues" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="createLabel" name="Label aanmaken">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showLabel" name="Toon resultaat: label">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="createIssue" name="Issue aanmaken">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showIssue" name="Toon resultaat: issue">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="commentOnIssue" name="Reageren op issue">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showIssueComment" name="Toon resultaat: reactie">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="getIssue" name="Issue ophalen">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showIssueDetail" name="Toon resultaat: issue met reacties">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="listIssues" name="Issues opsommen">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showIssues" name="Toon resultaat: issues">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="searchIssues" name="Issues zoeken">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showSearchResults" name="Toon resultaat: zoekopdracht">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="updateIssue" name="Issue bijwerken en sluiten">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="showIssueClosed" name="Toon resultaat: gesloten issue">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_1" name="Einde">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="createLabel" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="createLabel" targetRef="showLabel" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="showLabel" targetRef="createIssue" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="createIssue" targetRef="showIssue" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="showIssue" targetRef="commentOnIssue" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="commentOnIssue" targetRef="showIssueComment" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="showIssueComment" targetRef="getIssue" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="getIssue" targetRef="showIssueDetail" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="showIssueDetail" targetRef="listIssues" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="listIssues" targetRef="showIssues" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="showIssues" targetRef="searchIssues" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="searchIssues" targetRef="showSearchResults" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="showSearchResults" targetRef="updateIssue" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="updateIssue" targetRef="showIssueClosed" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="showIssueClosed" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_github-fixture-issue">
+    <bpmndi:BPMNPlane id="BPMNPlane_github-fixture-issue" bpmnElement="github-fixture-issue">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="180" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="createLabel_di" bpmnElement="createLabel">
+        <dc:Bounds x="266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showLabel_di" bpmnElement="showLabel">
+        <dc:Bounds x="466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="createIssue_di" bpmnElement="createIssue">
+        <dc:Bounds x="666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showIssue_di" bpmnElement="showIssue">
+        <dc:Bounds x="866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="commentOnIssue_di" bpmnElement="commentOnIssue">
+        <dc:Bounds x="1066" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showIssueComment_di" bpmnElement="showIssueComment">
+        <dc:Bounds x="1266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="getIssue_di" bpmnElement="getIssue">
+        <dc:Bounds x="1466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showIssueDetail_di" bpmnElement="showIssueDetail">
+        <dc:Bounds x="1666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="listIssues_di" bpmnElement="listIssues">
+        <dc:Bounds x="1866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showIssues_di" bpmnElement="showIssues">
+        <dc:Bounds x="2066" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="searchIssues_di" bpmnElement="searchIssues">
+        <dc:Bounds x="2266" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showSearchResults_di" bpmnElement="showSearchResults">
+        <dc:Bounds x="2466" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="updateIssue_di" bpmnElement="updateIssue">
+        <dc:Bounds x="2666" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="showIssueClosed_di" bpmnElement="showIssueClosed">
+        <dc:Bounds x="2866" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="3066" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="216" y="130" />
+        <di:waypoint x="266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="416" y="130" />
+        <di:waypoint x="466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="616" y="130" />
+        <di:waypoint x="666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="816" y="130" />
+        <di:waypoint x="866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1016" y="130" />
+        <di:waypoint x="1066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1216" y="130" />
+        <di:waypoint x="1266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1416" y="130" />
+        <di:waypoint x="1466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1616" y="130" />
+        <di:waypoint x="1666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1816" y="130" />
+        <di:waypoint x="1866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="2016" y="130" />
+        <di:waypoint x="2066" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="2216" y="130" />
+        <di:waypoint x="2266" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="2416" y="130" />
+        <di:waypoint x="2466" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="2616" y="130" />
+        <di:waypoint x="2666" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="2816" y="130" />
+        <di:waypoint x="2866" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="3016" y="130" />
+        <di:waypoint x="3066" y="130" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

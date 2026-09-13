@@ -1,0 +1,187 @@
+{
+    "$id": "github.schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "GitHub",
+    "type": "object",
+    "properties": {
+        "answerFirstThread": {
+            "type": "boolean",
+            "default": false
+        },
+        "branchName": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "branchRefPath": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "fieldId": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "fieldValue": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "fieldValueType": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "fileContent": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "filePath": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "graphqlQuery": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "graphqlVariables": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "issueBody": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "issueNumber": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "issueTitle": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "itemId": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "mergePullRequest": {
+            "type": "boolean",
+            "default": false
+        },
+        "owner": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "projectId": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "pullRequestNumber": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "repository": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "requestReviewers": {
+            "type": "boolean",
+            "default": false
+        },
+        "rerunWorkflow": {
+            "type": "boolean",
+            "default": false
+        },
+        "restBody": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "restMethod": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "restPath": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "reviewerLogins": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "runId": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "searchQuery": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "default": ""
+        },
+        "writeProjectField": {
+            "type": "boolean",
+            "default": false
+        }
+    }
+}

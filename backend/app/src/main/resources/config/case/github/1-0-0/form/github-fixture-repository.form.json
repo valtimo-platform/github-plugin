@@ -1,0 +1,45 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "toelichting",
+            "type": "content",
+            "input": false,
+            "label": "Toelichting",
+            "tableView": false,
+            "html": "<h4>GitHub fixture: repository</h4><p>Read-only. Reports which account the token belongs to, reads one repository and lists an owner's repositories. The safest fixture to run first: it writes nothing, so it is the quickest way to find out whether a plugin configuration works at all.</p><ol class=\"cds--list--ordered\"><li class=\"cds--list__item\">Ingelogde gebruiker ophalen</li><li class=\"cds--list__item\">Repository ophalen</li><li class=\"cds--list__item\">Repositories opsommen</li></ol>"
+        },
+        {
+            "key": "repository",
+            "type": "textfield",
+            "input": true,
+            "label": "Repository",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "owner/repo",
+            "description": "Must be a repository the token of the plugin configuration may reach. Fill it in even when the configuration has a default — the fixtures build search queries and REST paths out of it."
+        },
+        {
+            "key": "owner",
+            "type": "textfield",
+            "input": true,
+            "label": "Eigenaar",
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "placeholder": "valtimo-platform",
+            "description": "An organisation or a user, for the repository listing."
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

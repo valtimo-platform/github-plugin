@@ -1,0 +1,59 @@
+[
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "github-fixture-project",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "getProjectItems",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "get-project-items",
+        "actionProperties": {
+            "repository": "doc:/repository",
+            "issueNumber": "doc:/issueNumber",
+            "resultVariable": "projectItems"
+        }
+    },
+    {
+        "activityId": "showProjectItems",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-project-show-project-items",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    },
+    {
+        "activityId": "setProjectItemField",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3f4c1a8e-2b6d-4f19-9c72-8ad5e0b41c37",
+        "pluginActionDefinitionKey": "set-project-item-field",
+        "actionProperties": {
+            "projectId": "doc:/projectId",
+            "itemId": "doc:/itemId",
+            "fieldId": "doc:/fieldId",
+            "valueType": "doc:/fieldValueType",
+            "value": "doc:/fieldValue",
+            "resultVariable": "projectField"
+        }
+    },
+    {
+        "activityId": "showProjectField",
+        "activityType": "bpmn:UserTask:create",
+        "formDefinitionName": "github-fixture-project-show-project-field",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "large",
+        "subtitles": [],
+        "processLinkType": "form"
+    }
+]
