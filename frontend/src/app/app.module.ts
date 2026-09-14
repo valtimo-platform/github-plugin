@@ -75,7 +75,7 @@ import {TeamsModule} from "@valtimo/teams";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {environment} from "../environments/environment";
 
-import {GitHubPluginModule, githubPluginSpecification,} from "@valtimo-plugins/github";
+import {GitHubPluginModule, githubPluginSpecification,} from "@valtimo-plugins/github-plugin";
 
 export function tabsFactory() {
   return new Map<string, object>([

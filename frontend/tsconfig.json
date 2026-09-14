@@ -29,7 +29,7 @@
             "@src/*": [
                 "src/*"
             ],
-            "@valtimo-plugins/github": [
+            "@valtimo-plugins/github-plugin": [
                 "projects/plugin/src/public_api.ts"
             ]
         }

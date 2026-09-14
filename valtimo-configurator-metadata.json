@@ -7,7 +7,7 @@
         }
     ],
     "frontend": {
-        "import": "@valtimo-plugins/github",
+        "import": "@valtimo-plugins/github-plugin",
         "codeAdditions": [
             {
                 "spec": "githubPluginSpecification",

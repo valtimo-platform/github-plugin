@@ -4,7 +4,23 @@ Overview of the changes per version of the GitHub plugin.
 
 ## 1.0.1
 
-Two fixes, both to answers that were wrong rather than missing.
+### The frontend package is now `@valtimo-plugins/github-plugin`
+
+It was published as `@valtimo-plugins/github`. npm has no rename, so this is a new package
+rather than a moved one: the old name keeps its 1.0.0 and 1.0.1 and is deprecated with a
+pointer here. Anything importing the old name has to change its import — the module and the
+specification are otherwise identical.
+
+```
+npm remove @valtimo-plugins/github
+npm install @valtimo-plugins/github-plugin
+```
+
+The backend artifact is unchanged: `com.ritense.valtimoplugins:github`.
+
+### Two fixes
+
+Both to answers that were wrong rather than missing.
 
 `get-job-logs` returned no log at all. GitHub serves an Actions log as a redirect to blob
 storage, that redirect was not followed, and the empty answer was reported as a log that had
