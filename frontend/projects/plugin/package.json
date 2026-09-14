@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo-plugins/github",
+  "name": "@valtimo-plugins/github-plugin",
   "license": "EUPL-1.2",
   "version": "1.0.1",
   "peerDependencies": {
@@ -13,7 +13,7 @@
     "tslib": "2.8.1"
   },
   "scripts": {
-    "build": "ng build @valtimo-plugins/github",
-    "watch": "ng build @valtimo-plugins/github --watch"
+    "build": "ng build @valtimo-plugins/github-plugin",
+    "watch": "ng build @valtimo-plugins/github-plugin --watch"
   }
 }

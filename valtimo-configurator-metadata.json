@@ -3,11 +3,11 @@
     "version": 1,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins:github"
+            "import": "com.ritense.valtimoplugins:github-plugin"
         }
     ],
     "frontend": {
-        "import": "@valtimo-plugins/github",
+        "import": "@valtimo-plugins/github-plugin",
         "codeAdditions": [
             {
                 "spec": "githubPluginSpecification",

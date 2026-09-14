@@ -145,7 +145,7 @@ They are ordinary files now, and editing one by hand is fine.
 ```shell
 ./gradlew :backend:plugin:test          # unit tests
 ./gradlew :backend:plugin:ktlintCheck   # formatting, enforced in CI
-cd frontend && npx ng build @valtimo-plugins/github
+cd frontend && npx ng build @valtimo-plugins/github-plugin
 ```
 
 The Angular build is the frontend's real check: it compiles every template ahead of time, so
