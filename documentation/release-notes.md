@@ -29,15 +29,21 @@ it was marked as cut short even though nothing had been left behind. A process b
 that flag took the "there is more to fetch" route every single time. `truncated` now means
 items were genuinely left out.
 
-### Installing: the frontend has a new package name
+### Installing: both halves have a new name
 
-The plugin's frontend is now published as `@valtimo-plugins/github-plugin`. It used to be
-`@valtimo-plugins/github`, which stays available but is deprecated and gets no further
-updates.
+The plugin is now published under `github-plugin` rather than `github`, front and back:
+
+| | Was | Is now |
+| --- | --- | --- |
+| Frontend | `@valtimo-plugins/github` | `@valtimo-plugins/github-plugin` |
+| Backend | `com.ritense.valtimoplugins:github` | `com.ritense.valtimoplugins:github-plugin` |
+
+The old names stay available but are deprecated and get no further updates.
 
 Nothing changes in the admin UI. Existing plugin configurations, process links and result
-variables keep working, and there is nothing to redo in your diagrams. Only whoever installs
-Valtimo has to point at the new name once. The backend is unchanged.
+variables keep working, and there is nothing to redo in your diagrams — the plugin is still
+called **GitHub** on screen and still identifies itself as `github` underneath. Only whoever
+installs Valtimo has to point at the two new names once.
 
 ## 1.0.0
 
