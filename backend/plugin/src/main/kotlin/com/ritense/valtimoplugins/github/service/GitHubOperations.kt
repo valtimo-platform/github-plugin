@@ -778,9 +778,14 @@ class GitHubOperations(
      * The log of one job, tail-first.
      *
      * GitHub answers this endpoint with a redirect to blob storage and plain text rather
-     * than JSON, so the body arrives as a string. [maxLines] keeps the tail — a failing job
-     * says why it failed at the end, and the beginning is several thousand lines of setup
-     * that would fill a process variable with nothing.
+     * than JSON, which is why it goes through [GitHubClient.getText] rather than the JSON
+     * calls every other action uses. [maxLines] keeps the tail — a failing job says why it
+     * failed at the end, and the beginning is several thousand lines of setup that would
+     * fill a process variable with nothing.
+     *
+     * A log GitHub would not hand over — an expired run, a job still starting — reports
+     * `available` false with the reason, rather than an empty log that a process would read
+     * as a job that said nothing.
      */
     fun getJobLogs(
         connection: GitHubConnectionProperties,
@@ -788,18 +793,14 @@ class GitHubOperations(
         jobId: Long,
         maxLines: Int,
     ): ObjectNode {
-        val response =
-            runCatching { client.get(connection, "/repos/$repository/actions/jobs/$jobId/logs") }
+        val text =
+            runCatching { client.getText(connection, "/repos/$repository/actions/jobs/$jobId/logs") }
                 .getOrElse { failure ->
                     logger.warn(failure) { "Could not read logs of job $jobId in $repository" }
-                    return obj {
-                        put("jobId", jobId)
-                        put("available", false)
-                        put("reason", failure.message)
-                    }
+                    return unavailable(jobId, failure.message)
                 }
+                ?: return unavailable(jobId, "GitHub returned no log for job $jobId")
 
-        val text = if (response.isTextual) response.asText() else response.toString()
         val lines = text.lines()
         val tail = if (lines.size > maxLines) lines.takeLast(maxLines) else lines
 
@@ -1109,6 +1110,16 @@ class GitHubOperations(
     }
 
     // ─── helpers ────────────────────────────────────────────────────────────
+
+    private fun unavailable(
+        jobId: Long,
+        reason: String?,
+    ): ObjectNode =
+        obj {
+            put("jobId", jobId)
+            put("available", false)
+            put("reason", reason)
+        }
 
     private fun defaultBranch(
         connection: GitHubConnectionProperties,

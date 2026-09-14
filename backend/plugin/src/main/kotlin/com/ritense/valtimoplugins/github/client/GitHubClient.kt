@@ -151,10 +151,19 @@ class GitHubClient(
             }
 
             pages++
-            if (limit != null && items.size() >= limit) {
-                return PagedResult(trim(items, limit), truncated = true, totalCount = totalCount)
-            }
             next = nextLink(response.headers)
+            if (limit != null && items.size() >= limit) {
+                return PagedResult(
+                    items = trim(items, limit),
+                    // Only truncated when something was actually left behind: either this
+                    // page held more than was asked for, or GitHub offered another one. A
+                    // list that happens to be exactly [limit] long was not cut short, and
+                    // saying it was sends a process down the "there is more to do" branch
+                    // on every run.
+                    truncated = items.size() > limit || next != null,
+                    totalCount = totalCount,
+                )
+            }
         }
 
         return PagedResult(
@@ -162,6 +171,43 @@ class GitHubClient(
             truncated = next != null,
             totalCount = totalCount,
         )
+    }
+
+    /**
+     * Reads an endpoint that answers with plain text, following the redirect to storage that
+     * GitHub serves an Actions job log through.
+     *
+     * The redirect is followed by hand rather than by the http client, because the target is
+     * a pre-signed URL on a host that is not GitHub — Azure blob storage — and a client
+     * configured to follow redirects would carry the `Authorization` header there with it.
+     * The signature is what authorises that second call; the token would only be a GitHub
+     * credential handed to a third party that never needed it.
+     *
+     * Null when GitHub answered with neither a body nor somewhere to fetch one from, which
+     * is what an expired log looks like. Callers are expected to say so rather than pass an
+     * empty log off as a log that was read.
+     */
+    fun getText(
+        connection: GitHubConnectionProperties,
+        path: String,
+    ): String? {
+        val response = exchange(connection, HttpMethod.GET, uri(connection, path), null)
+        val location = response.headers.location
+        if (response.status in REDIRECTED && location != null) {
+            return restClientBuilder
+                .clone()
+                .build()
+                .get()
+                .uri(location)
+                .headers { it.set(HttpHeaders.USER_AGENT, USER_AGENT) }
+                .retrieve()
+                .body(String::class.java)
+                ?.takeIf { it.isNotEmpty() }
+        }
+        // The raw bytes rather than the parsed body: a log is text, and a log whose first
+        // line happens to parse as JSON — a bare timestamp does — would come back through
+        // the tree as that one value with the rest of the log dropped.
+        return String(response.raw, Charsets.UTF_8).takeIf { it.isNotEmpty() }
     }
 
     /**
@@ -233,10 +279,10 @@ class GitHubClient(
                             status = response.statusCode.value(),
                         )
                     }
-                    Response(parsed, response.headers)
+                    Response(response.statusCode.value(), parsed, raw, response.headers)
                 }, false)
 
-        return entity ?: Response(NullNode.instance, HttpHeaders.EMPTY)
+        return entity ?: Response(0, NullNode.instance, ByteArray(0), HttpHeaders.EMPTY)
     }
 
     /**
@@ -308,8 +354,14 @@ class GitHubClient(
             objectMapper.createArrayNode().apply { (0 until limit).forEach { add(items.get(it)) } }
         }
 
-    private data class Response(
+    /**
+     * Not a data class: [raw] holds the bytes [body] was parsed from, and an array makes
+     * generated equality mean something other than it reads as.
+     */
+    private class Response(
+        val status: Int,
         val body: JsonNode,
+        val raw: ByteArray,
         val headers: HttpHeaders,
     )
 
@@ -338,5 +390,8 @@ class GitHubClient(
         private const val API_VERSION = "2022-11-28"
         private const val USER_AGENT = "valtimo-github-plugin"
         private const val MAX_ERROR_LENGTH = 1000
+
+        /** The statuses [getText] treats as "the body is somewhere else". */
+        private val REDIRECTED = setOf(301, 302, 303, 307, 308)
     }
 }
