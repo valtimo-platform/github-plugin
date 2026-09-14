@@ -95,6 +95,73 @@ class GitHubClientTest : BaseTest() {
         assertThat(result.truncated).isTrue()
     }
 
+    /**
+     * A list that happens to be exactly as long as the limit was not cut short. Reporting it
+     * as truncated sends a process down the "there is more to do" branch on every run.
+     */
+    @Test
+    fun `should not call a list truncated when it ended exactly on the limit`() {
+        enqueue("""[{"number":1},{"number":2}]""")
+
+        val result = client.getPaged(connection(), "/repos/o/r/issues", limit = 2)
+
+        assertThat(result.items).hasSize(2)
+        assertThat(result.truncated).isFalse()
+    }
+
+    @Test
+    fun `should call a list that ended on the limit truncated when github offered another page`() {
+        enqueuePage("""[{"number":1},{"number":2}]""", next = "/repos/o/r/issues?page=2")
+
+        val result = client.getPaged(connection(), "/repos/o/r/issues", limit = 2)
+
+        assertThat(result.items).hasSize(2)
+        assertThat(result.truncated).isTrue()
+    }
+
+    /**
+     * An Actions job log is not JSON: GitHub answers 302 to a pre-signed blob URL. Following
+     * it is the only way to get the log at all — without it the body is empty and a caller
+     * cannot tell that from a job that logged nothing.
+     */
+    @Test
+    fun `should follow the redirect github serves a job log through`() {
+        val blob = MockWebServer()
+        blob.start()
+        blob.enqueue(MockResponse().setHeader("Content-Type", "text/plain").setBody("setup\nBUILD FAILED"))
+        server.enqueue(MockResponse().setResponseCode(302).setHeader("Location", blob.url("/log.txt").toString()))
+
+        val text = client.getText(connection(), "/repos/o/r/actions/jobs/1/logs")
+
+        assertThat(text).isEqualTo("setup\nBUILD FAILED")
+        blob.shutdown()
+    }
+
+    /**
+     * The signature on the blob URL is what authorises the second call. Carrying the GitHub
+     * token to a host that is not GitHub would hand a credential to a third party that never
+     * needed it.
+     */
+    @Test
+    fun `should not carry the github token to the storage host it is redirected to`() {
+        val blob = MockWebServer()
+        blob.start()
+        blob.enqueue(MockResponse().setHeader("Content-Type", "text/plain").setBody("log"))
+        server.enqueue(MockResponse().setResponseCode(302).setHeader("Location", blob.url("/log.txt").toString()))
+
+        client.getText(connection(), "/repos/o/r/actions/jobs/1/logs")
+
+        assertThat(blob.takeRequest().getHeader("Authorization")).isNull()
+        blob.shutdown()
+    }
+
+    @Test
+    fun `should report no log rather than an empty one when github offers nothing to fetch`() {
+        server.enqueue(MockResponse().setResponseCode(204))
+
+        assertThat(client.getText(connection(), "/repos/o/r/actions/jobs/1/logs")).isNull()
+    }
+
     @Test
     fun `should unwrap a search response and keep what github said the total was`() {
         enqueue("""{"total_count":1337,"incomplete_results":false,"items":[{"number":7}]}""")

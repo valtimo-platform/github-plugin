@@ -40,6 +40,7 @@ else's review — is behind a checkbox that is off by default. See
 
 ## Documentation
 
+- [Handleiding](documentation/handleiding.md) — Dutch, for administrators and process designers: setting it up in the admin UI, no technical background needed
 - [Getting started](documentation/getting-started.md) — running the sandbox and its fixtures, and developing on it
 - [Plugin documentation](documentation/plugin.md) — the actions, their properties and what they return
 - [Release notes](documentation/release-notes.md) — version history

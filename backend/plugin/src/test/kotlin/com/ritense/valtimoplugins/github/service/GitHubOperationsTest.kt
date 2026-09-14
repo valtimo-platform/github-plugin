@@ -392,6 +392,47 @@ class GitHubOperationsTest : BaseTest() {
         ).isFalse()
     }
 
+    // ─── job logs ───────────────────────────────────────────────────────────
+
+    @Test
+    fun `should keep the tail of a job log, which is where a failing job says why`() {
+        whenever(client.getText(any(), eq("/repos/$repository/actions/jobs/7/logs")))
+            .thenReturn("setup\ncompile\ntest\nBUILD FAILED")
+
+        val result = operations.getJobLogs(connection, repository, 7, maxLines = 2)
+
+        assertThat(result.path("available").asBoolean()).isTrue()
+        assertThat(result.path("log").asText()).isEqualTo("test\nBUILD FAILED")
+        assertThat(result.path("truncated").asBoolean()).isTrue()
+        assertThat(result.path("totalLines").asInt()).isEqualTo(4)
+    }
+
+    /**
+     * An expired run has no log to hand over. Saying `available` false is the difference
+     * between a process reporting that it could not read the log and one reporting that the
+     * job failed silently.
+     */
+    @Test
+    fun `should say a log was not available rather than hand back an empty one`() {
+        whenever(client.getText(any(), eq("/repos/$repository/actions/jobs/7/logs"))).thenReturn(null)
+
+        val result = operations.getJobLogs(connection, repository, 7, maxLines = 200)
+
+        assertThat(result.path("available").asBoolean()).isFalse()
+        assertThat(result.has("log")).isFalse()
+    }
+
+    @Test
+    fun `should say why a log could not be read when github refused it`() {
+        whenever(client.getText(any(), eq("/repos/$repository/actions/jobs/7/logs")))
+            .thenThrow(GitHubException("Not Found", status = 404))
+
+        val result = operations.getJobLogs(connection, repository, 7, maxLines = 200)
+
+        assertThat(result.path("available").asBoolean()).isFalse()
+        assertThat(result.path("reason").asText()).contains("Not Found")
+    }
+
     // ─── branches ───────────────────────────────────────────────────────────
 
     @Test
