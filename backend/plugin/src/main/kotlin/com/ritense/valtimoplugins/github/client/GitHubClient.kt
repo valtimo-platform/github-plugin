@@ -28,6 +28,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.RestClientResponseException
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
@@ -248,42 +249,79 @@ class GitHubClient(
         logger.debug { "GitHub $method $uri" }
 
         val entity =
-            restClientBuilder
-                .clone()
-                .build()
-                .method(method)
-                .uri(uri)
-                .headers { headers ->
-                    headers.setBearerAuth(connection.token)
-                    headers.accept = listOf(MediaType.valueOf(ACCEPT))
-                    headers.set(API_VERSION_HEADER, API_VERSION)
-                    headers.set(HttpHeaders.USER_AGENT, USER_AGENT)
-                }.apply {
-                    if (body != null) {
-                        contentType(MediaType.APPLICATION_JSON)
-                        body(body)
-                    }
-                }.exchange({ _, response ->
-                    val raw = response.body.readAllBytes()
-                    val parsed =
-                        if (raw.isEmpty()) {
-                            NullNode.instance
-                        } else {
-                            runCatching { objectMapper.readTree(raw) as JsonNode }
-                                .getOrElse { objectMapper.getNodeFactory().textNode(String(raw)) }
+            // A refusal has to leave here as a GitHubException whichever half of the stack
+            // noticed it first. The lambda below raises one from the status it reads, but a
+            // Valtimo application wraps the response stream in `LoggingRestClientCustomizer`,
+            // which reads the head of an error response and raises Spring's
+            // `RestClientResponseException` before the lambda gets that far. Without this
+            // catch, callers that branch on a status — `createLabel` treating 422 as "the
+            // label is already there" — silently never match, so a process whose first step
+            // creates its working label ran exactly once.
+            //
+            // What this recovers is the status, and in a Valtimo application only the status:
+            // that customizer builds its exception from `statusCode` and `statusText` alone
+            // and drops the body it has just read, so `describe` has nothing to name the
+            // rejected field with and the message is a bare "GitHub responded 422". The body
+            // is still used when there is one — a `RestClientResponseException` from anywhere
+            // that keeps it, the tests included — which is why `parseBody` is here.
+            //
+            // The trailing `true` on `exchange` is `close`: it decides whether RestClient
+            // closes the response once the exchange function returns, and `false` makes that
+            // the caller's job — which nothing here was doing, so every call leaked the
+            // connection it borrowed. Apache's pool lends five per route and Valtimo waits
+            // five seconds for one, so the sixth call and everything after it died with
+            // "ConnectionRequestTimeoutException: Timeout deadline: 5000 MILLISECONDS" until
+            // the application was restarted. RestClient closes in a finally, so this covers
+            // the throwing path too, which is the one that matters: a repository that refuses
+            // a write refuses it every time. The whole body is in `raw` before the function
+            // returns, so there is nothing to keep the response open for.
+            try {
+                restClientBuilder
+                    .clone()
+                    .build()
+                    .method(method)
+                    .uri(uri)
+                    .headers { headers ->
+                        headers.setBearerAuth(connection.token)
+                        headers.accept = listOf(MediaType.valueOf(ACCEPT))
+                        headers.set(API_VERSION_HEADER, API_VERSION)
+                        headers.set(HttpHeaders.USER_AGENT, USER_AGENT)
+                    }.apply {
+                        if (body != null) {
+                            contentType(MediaType.APPLICATION_JSON)
+                            body(body)
                         }
+                    }.exchange({ _, response ->
+                        val raw = response.body.readAllBytes()
+                        val parsed = parseBody(raw)
 
-                    if (response.statusCode.isError) {
-                        throw GitHubException(
-                            message = describe(response.statusCode.value(), parsed),
-                            status = response.statusCode.value(),
-                        )
-                    }
-                    Response(response.statusCode.value(), parsed, raw, response.headers)
-                }, false)
+                        if (response.statusCode.isError) {
+                            throw GitHubException(
+                                message = describe(response.statusCode.value(), parsed),
+                                status = response.statusCode.value(),
+                            )
+                        }
+                        Response(response.statusCode.value(), parsed, raw, response.headers)
+                    }, true)
+            } catch (e: RestClientResponseException) {
+                throw GitHubException(
+                    message = describe(e.statusCode.value(), parseBody(e.responseBodyAsByteArray)),
+                    status = e.statusCode.value(),
+                    cause = e,
+                )
+            }
 
         return entity ?: Response(0, NullNode.instance, ByteArray(0), HttpHeaders.EMPTY)
     }
+
+    /** A body as JSON where it is JSON, as text where it is not, and null where there is none. */
+    private fun parseBody(raw: ByteArray): JsonNode =
+        if (raw.isEmpty()) {
+            NullNode.instance
+        } else {
+            runCatching { objectMapper.readTree(raw) as JsonNode }
+                .getOrElse { objectMapper.getNodeFactory().textNode(String(raw)) }
+        }
 
     /**
      * GitHub's error bodies carry the reason a write was refused — a failed validation names
