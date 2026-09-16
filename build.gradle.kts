@@ -108,6 +108,11 @@ subprojects {
 
         tasks.jar {
             enabled = true
+            // Spring Boot's Gradle plugin moves the ordinary jar to the `plain` classifier so it
+            // cannot be mistaken for the fat jar. `bootJar` is disabled here — a plugin is a
+            // library, not an application — so the classifier only makes the published POM point
+            // at an artifact that does not exist, which is a 404 for every Maven consumer.
+            archiveClassifier.set("")
             manifest {
                 pluginProperties["pluginArtifactId"]?.let { attributes["Implementation-Title"] = it }
                 pluginProperties["pluginVersion"]?.let { attributes["Implementation-Version"] = it }

@@ -150,7 +150,9 @@ Desktop.ini
 ######################
 # Deployment directory
 ######################
-/deployment/**
+# Unanchored on purpose: the frontend build writes to frontend/deployment/, which a
+# leading-slash pattern does not match.
+deployment/
 
 **/AwsCredentials.properties
 

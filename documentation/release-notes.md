@@ -2,6 +2,35 @@
 
 Overview of the changes per version of the GitHub plugin.
 
+## 1.0.2
+
+### The plugin stopped reaching GitHub after five calls
+
+Every call leaked the connection it borrowed. The pool hands out five per host, so the sixth
+call and everything after it waited five seconds for a connection that was never coming back
+and then failed with `ConnectionRequestTimeoutException` — and stayed broken until the
+application was restarted.
+
+A process running one or two actions never noticed. A process that walks a queue — read the
+pull requests, then per pull request its reviews, its checks and its runs — hit it every time,
+somewhere in the middle, with an error that named a timeout and said nothing about GitHub.
+
+### Create label works on the second run
+
+**Create label** treats "this label already exists" as success: it looks the existing label up
+and carries on. That only works if the plugin can see GitHub's 422, and in a Valtimo
+application it could not — the response is read by a logging interceptor that raises Spring's
+own exception first, so the plugin's own error, the one carrying the status, was never built.
+
+A process whose first step creates its working label therefore ran exactly once and failed on
+every run after that, with `422 Unprocessable Entity` and nothing to say which of its steps
+had a problem.
+
+The status now survives whichever half of the stack noticed the refusal. The *reason* does not,
+and cannot yet: that interceptor builds its exception from the status line alone and discards
+the body it has just read, so a rejected write still reports `GitHub responded 422` without
+naming the field GitHub objected to. Recovering that needs a change in Valtimo, not here.
+
 ## 1.0.1
 
 ### Get job logs now actually shows the log
