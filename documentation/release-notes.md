@@ -2,6 +2,10 @@
 
 Overview of the changes per version of the GitHub plugin.
 
+## 1.0.3
+
+Ondersteuning voor Valtimo 13.48.0.
+
 ## 1.0.2
 
 ### The plugin stopped reaching GitHub after five calls
